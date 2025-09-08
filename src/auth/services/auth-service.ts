@@ -35,7 +35,7 @@ class AuthServiceClass {
   }
 
   async register(email: string, password: string, name: string): Promise<User> {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       method: "POST",
       headers: this.getAuthHeaders(),
       credentials: "include", // Include cookies in requests

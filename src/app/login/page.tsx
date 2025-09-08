@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { LoginForm } from "./login-form"
-import { RegisterForm } from "./register-form"
-import { Card, CardContent } from "@/components/ui/card"
 
-export function AuthLayout() {
+import { Card, CardContent } from "@/components/ui/card"
+import { LoginForm } from "@/auth/components/login-form"
+import { RegisterForm } from "@/auth/components/register-form"
+
+export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true)
 
   return (

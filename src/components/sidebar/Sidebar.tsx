@@ -15,8 +15,9 @@ import {
   Bell,
   ChevronLeft,
   ChevronRight,
+  LogOut,
 } from "lucide-react"
-
+import { useAuth } from "@/auth/providers/auth-provider"
 interface SidebarItem {
   id: string
   label: string
@@ -45,10 +46,18 @@ interface SidebarProps {
 export function Sidebar({ className, defaultCollapsed = false, onItemClick }: SidebarProps) {
   const [activeItem, setActiveItem] = useState("dashboard")
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
-
+  const { logout } = useAuth()
   const handleItemClick = (itemId: string) => {
     setActiveItem(itemId)
     onItemClick?.(itemId)
+  }
+  const handleLogout = async () => {
+    try {
+      await logout()
+      window.location.href = "/login"
+    } catch (error) {
+      console.error("Logout error:", error)
+    }
   }
 
   return (
@@ -135,6 +144,28 @@ export function Sidebar({ className, defaultCollapsed = false, onItemClick }: Si
             </button>
           )
         })}
+                {!isCollapsed && (
+          <div className="pt-4 mt-4 border-t border-sidebar-border">
+            <p className="text-xs font-medium text-sidebar-foreground/70 mb-2 px-3">Authentication</p>
+          </div>
+        )}
+        <button
+          onClick={handleLogout}
+          className={cn(
+            "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative",
+            "text-sidebar-foreground hover:bg-red-500/10 hover:text-red-500",
+          )}
+        >
+          <LogOut className="w-5 h-5 flex-shrink-0" />
+          {!isCollapsed && <span className="font-medium text-sm truncate">Logout</span>}
+
+          {/* Tooltip for collapsed state */}
+          {isCollapsed && (
+            <div className="absolute left-full ml-2 px-2 py-1 bg-sidebar-foreground text-sidebar text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+              Logout
+            </div>
+          )}
+        </button>
       </nav>
 
       {/* Footer */}
